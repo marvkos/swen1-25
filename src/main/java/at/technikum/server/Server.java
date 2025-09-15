@@ -1,6 +1,7 @@
 package at.technikum.server;
 
 import at.technikum.application.common.Application;
+import at.technikum.server.util.RequestMapper;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class Server {
                     );
             this.httpServer.createContext(
                     "/",
-                    new Handler(this.application)
+                new Handler(this.application, new RequestMapper())
             );
             this.httpServer.start();
         } catch (IOException e) {
