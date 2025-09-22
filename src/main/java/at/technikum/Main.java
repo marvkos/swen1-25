@@ -1,6 +1,7 @@
 package at.technikum;
 
 import at.technikum.application.echo.EchoApplication;
+import at.technikum.application.weather.WeatherApplication;
 import at.technikum.server.Server;
 
 public class Main {
@@ -8,7 +9,7 @@ public class Main {
 
         Server server = new Server(
             8080,
-            new EchoApplication()
+            new WeatherApplication()
         );
         server.start();
     }
