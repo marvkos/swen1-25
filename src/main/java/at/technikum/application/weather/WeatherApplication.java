@@ -7,8 +7,6 @@ import at.technikum.application.weather.controller.CityController;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
 
-import java.util.Optional;
-
 public class WeatherApplication implements Application {
 
     private final Router router;

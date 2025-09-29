@@ -8,6 +8,15 @@ public class Response {
 
     private String body;
 
+    public Response() {
+    }
+
+    public Response(Status status, ContentType contentType, String body) {
+        this.status = status;
+        this.contentType = contentType;
+        this.body = body;
+    }
+
     public void setStatus(Status status) {
         this.status = status;
     }

@@ -4,15 +4,20 @@ import com.sun.net.httpserver.HttpExchange;
 
 public class Request {
 
-    private String method;
+    private Method method;
 
     private String path;
 
-    public String getMethod() {
-        return method;
+    private String body;
+
+    public Request() {
     }
 
-    public void setMethod(String method) {
+    public String getMethod() {
+        return method.getVerb();
+    }
+
+    public void setMethod(Method method) {
         this.method = method;
     }
 
@@ -22,5 +27,13 @@ public class Request {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 }

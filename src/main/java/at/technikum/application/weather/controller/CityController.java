@@ -26,8 +26,6 @@ public class CityController extends Controller {
         throw new RuntimeException("404");
     }
 
-    // private User readUser(String id)
-
     private Response readWeather(Request request) {
 
         String city = request.getPath().split("/")[2];
