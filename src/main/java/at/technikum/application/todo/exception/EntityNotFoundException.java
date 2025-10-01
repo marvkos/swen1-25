@@ -1,5 +1,8 @@
 package at.technikum.application.todo.exception;
 
+import at.technikum.server.http.Response;
+
+// @HttpStatus(status = Status.NOT_FOUND)
 public class EntityNotFoundException extends RuntimeException {
     public EntityNotFoundException() {
     }
