@@ -6,6 +6,8 @@ import at.technikum.application.common.Router;
 import at.technikum.application.todo.controller.TodoController;
 import at.technikum.application.todo.exception.EntityNotFoundException;
 import at.technikum.application.todo.exception.ExceptionMapper;
+import at.technikum.application.todo.exception.JsonConversionException;
+import at.technikum.application.todo.exception.NotJsonBodyException;
 import at.technikum.application.todo.repository.MemoryTodoRepository;
 import at.technikum.application.todo.service.TodoService;
 import at.technikum.server.http.ContentType;
@@ -24,11 +26,9 @@ public class TodoApplication implements Application {
         router.addRoute("/todos", new TodoController(new TodoService(new MemoryTodoRepository())));
 
         this.exceptionMapper = new ExceptionMapper();
-        Response response = new Response();
-        response.setStatus(Status.INTERNAL_SERVER_ERROR);
-        response.setContentType(ContentType.TEXT_PLAIN);
-
-        this.exceptionMapper.register(EntityNotFoundException.class, response /* Response(404) */);
+        this.exceptionMapper.register(EntityNotFoundException.class, Status.NOT_FOUND);
+        this.exceptionMapper.register(NotJsonBodyException.class, Status.BAD_REQUEST);
+        this.exceptionMapper.register(JsonConversionException.class, Status.INTERNAL_SERVER_ERROR);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class TodoApplication implements Application {
 
             return controller.handle(request);
         } catch (Exception ex) {
-            // map exception to http response
+            return exceptionMapper.toResponse(ex);
         }
     }
 }

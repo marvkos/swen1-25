@@ -18,7 +18,7 @@ public class MemoryTodoRepository implements TodoRepository {
 
     @Override
     public Todo save(Todo todo) {
-        return null;
+        return todo;
     }
 
     @Override
