@@ -23,7 +23,14 @@ public class TodoApplication implements Application {
     public TodoApplication() {
         this.router = new Router();
 
-        router.addRoute("/todos", new TodoController(new TodoService(new MemoryTodoRepository())));
+        router.addRoute("/todos",
+                new TodoController(
+                    new TodoService(
+                            new MemoryTodoRepository()
+                    )
+            )
+        );
+        // router.addRoute("/todos", "GET", TodoController::readALL)
 
         this.exceptionMapper = new ExceptionMapper();
         this.exceptionMapper.register(EntityNotFoundException.class, Status.NOT_FOUND);
