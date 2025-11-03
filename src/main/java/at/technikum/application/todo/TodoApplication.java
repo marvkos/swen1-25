@@ -1,12 +1,15 @@
 package at.technikum.application.todo;
 
 import at.technikum.application.common.Application;
+import at.technikum.application.common.ConnectionPool;
 import at.technikum.application.common.Controller;
 import at.technikum.application.todo.exception.RouteNotFoundException;
 import at.technikum.application.common.Router;
 import at.technikum.application.todo.controller.TodoController;
 import at.technikum.application.todo.exception.*;
+import at.technikum.application.todo.repository.DbTodoRepository;
 import at.technikum.application.todo.repository.MemoryTodoRepository;
+import at.technikum.application.todo.repository.TodoRepository;
 import at.technikum.application.todo.service.TodoService;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
@@ -17,16 +20,29 @@ public class TodoApplication implements Application {
     private final Router router;
     private final ExceptionMapper exceptionMapper;
 
+    private final ConnectionPool connectionPool;
+
+    private final TodoRepository todoRepository;
+    private final TodoService todoService;
+    private final TodoController todoController;
+
     public TodoApplication() {
         this.router = new Router();
 
-        router.addRoute("/todos",
-                new TodoController(
-                    new TodoService(
-                            new MemoryTodoRepository()
-                    )
-            )
+        this.connectionPool = new ConnectionPool(
+                "postgresql",
+                "localhost",
+                5432,
+                "swen1user",
+                "swen1db", // secretManager.get("DB_PW")
+                "tododb"
         );
+
+        this.todoRepository = new DbTodoRepository(connectionPool);
+        this.todoService = new TodoService(todoRepository);
+        this.todoController = new TodoController(todoService);
+
+        router.addRoute("/todos", todoController);
         // router.addRoute("/todos", "GET", TodoController::readALL)
 
         this.exceptionMapper = new ExceptionMapper();
